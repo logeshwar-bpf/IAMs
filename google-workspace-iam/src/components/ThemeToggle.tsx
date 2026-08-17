@@ -1,0 +1,63 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { Sun, Moon } from 'lucide-react';
+
+export function ThemeToggle() {
+  const [dark, setDark] = useState(false);
+
+  useEffect(() => {
+    try {
+      const savedTheme = localStorage.getItem('iam-theme') || localStorage.getItem('gw_iam_theme');
+      if (savedTheme === 'dark') {
+        document.documentElement.dataset.theme = 'dark';
+        setDark(true);
+      } else {
+        delete document.documentElement.dataset.theme;
+        setDark(false);
+      }
+    } catch (e) {}
+  }, []);
+
+  const toggleTheme = () => {
+    const next = !dark;
+    setDark(next);
+    try {
+      if (next) {
+        document.documentElement.dataset.theme = 'dark';
+        localStorage.setItem('iam-theme', 'dark');
+        localStorage.setItem('gw_iam_theme', 'dark');
+      } else {
+        delete document.documentElement.dataset.theme;
+        localStorage.setItem('iam-theme', 'light');
+        localStorage.setItem('gw_iam_theme', 'light');
+      }
+    } catch (e) {}
+  };
+
+  return (
+    <button
+      className="theme-toggle"
+      onClick={toggleTheme}
+      type="button"
+      title={dark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+      aria-label={dark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+    >
+      <div
+        className="theme-toggle-icon-box"
+        style={{
+          background: dark ? 'rgba(245, 158, 11, 0.15)' : 'var(--primary-soft)',
+        }}
+      >
+        {dark ? (
+          <Sun style={{ width: 15, height: 15, color: '#f59e0b', flexShrink: 0 }} />
+        ) : (
+          <Moon style={{ width: 15, height: 15, color: 'var(--primary)', flexShrink: 0 }} />
+        )}
+      </div>
+      <span style={{ fontWeight: 600, fontSize: 13, flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+        {dark ? 'Dark Mode' : 'Light Mode'}
+      </span>
+    </button>
+  );
+}

@@ -1,0 +1,316 @@
+{
+  "users": [
+    {
+      "id": "usr_001",
+      "name": "John Doe",
+      "email": "john.doe@anthropic-client.com",
+      "role": "Engineering Lead",
+      "plan": "Enterprise",
+      "status": "Active",
+      "seats": 1,
+      "billingCycle": "Monthly",
+      "grantedAt": "2026-08-03T10:11:45.588Z",
+      "updatedAt": "2026-08-03T10:11:45.588Z"
+    },
+    {
+      "id": "usr_002",
+      "name": "Sarah Lee",
+      "email": "sarah.lee@designhub.io",
+      "role": "Product Designer",
+      "plan": "Claude Team",
+      "status": "Active",
+      "seats": 5,
+      "billingCycle": "Monthly",
+      "grantedAt": "2026-07-09T10:11:25.465Z",
+      "updatedAt": "2026-07-09T10:11:25.465Z"
+    },
+    {
+      "id": "usr_003",
+      "name": "Alex Kim",
+      "email": "alex.kim@fintechlabs.com",
+      "role": "Data Scientist",
+      "plan": "Claude Pro",
+      "status": "Active",
+      "seats": 1,
+      "billingCycle": "Monthly",
+      "grantedAt": "2026-07-14T10:11:25.465Z",
+      "updatedAt": "2026-07-14T10:11:25.465Z"
+    },
+    {
+      "id": "usr_004",
+      "name": "Emma Wilson",
+      "email": "emma.wilson@cloudtech.org",
+      "role": "DevOps Engineer",
+      "plan": "Enterprise",
+      "status": "Active",
+      "seats": 25,
+      "billingCycle": "Annual",
+      "grantedAt": "2026-07-19T10:11:25.465Z",
+      "updatedAt": "2026-07-19T10:11:25.465Z"
+    },
+    {
+      "id": "usr_005",
+      "name": "Michael Brown",
+      "email": "michael.b@acmesolutions.com",
+      "role": "CTO",
+      "plan": "Enterprise",
+      "status": "Active",
+      "seats": 50,
+      "billingCycle": "Permanent",
+      "grantedAt": "2026-07-24T10:11:25.465Z",
+      "updatedAt": "2026-07-24T10:11:25.465Z"
+    },
+    {
+      "id": "usr_006",
+      "name": "Sophia Martinez",
+      "email": "sophia.m@creativeworks.co",
+      "role": "UX Researcher",
+      "plan": "Claude Pro",
+      "status": "Active",
+      "seats": 1,
+      "billingCycle": "Monthly",
+      "grantedAt": "2026-07-26T10:11:25.465Z",
+      "updatedAt": "2026-07-26T10:11:25.465Z"
+    },
+    {
+      "id": "usr_007",
+      "name": "David Chen",
+      "email": "david.chen@quantumai.net",
+      "role": "AI Researcher",
+      "plan": "Claude Team",
+      "status": "Active",
+      "seats": 10,
+      "billingCycle": "Monthly",
+      "grantedAt": "2026-07-27T10:11:25.465Z",
+      "updatedAt": "2026-07-27T10:11:25.465Z"
+    },
+    {
+      "id": "usr_008",
+      "name": "Olivia Taylor",
+      "email": "olivia.t@venturecapital.io",
+      "role": "Partner",
+      "plan": "No Access",
+      "status": "Revoked",
+      "seats": 0,
+      "billingCycle": "N/A",
+      "grantedAt": "2026-07-29T10:11:25.465Z",
+      "updatedAt": "2026-07-29T10:11:25.465Z"
+    },
+    {
+      "id": "usr_009",
+      "name": "James Anderson",
+      "email": "james.a@cyberdefense.gov",
+      "role": "Security Specialist",
+      "plan": "Claude Pro",
+      "status": "Active",
+      "seats": 1,
+      "billingCycle": "Monthly",
+      "grantedAt": "2026-07-30T10:11:25.465Z",
+      "updatedAt": "2026-07-30T10:11:25.465Z"
+    },
+    {
+      "id": "usr_010",
+      "name": "Emily Thomas",
+      "email": "emily.t@healthplus.org",
+      "role": "Medical Analyst",
+      "plan": "Claude Team",
+      "status": "Active",
+      "seats": 5,
+      "billingCycle": "Monthly",
+      "grantedAt": "2026-07-31T10:11:25.465Z",
+      "updatedAt": "2026-07-31T10:11:25.465Z"
+    },
+    {
+      "id": "usr_011",
+      "name": "Daniel Jackson",
+      "email": "daniel.j@edulearn.edu",
+      "role": "Professor",
+      "plan": "Claude Pro",
+      "status": "Active",
+      "seats": 1,
+      "billingCycle": "Monthly",
+      "grantedAt": "2026-08-01T10:11:25.465Z",
+      "updatedAt": "2026-08-01T10:11:25.465Z"
+    },
+    {
+      "id": "usr_012",
+      "name": "Ava White",
+      "email": "ava.w@mediastream.tv",
+      "role": "Content Strategist",
+      "plan": "No Access",
+      "status": "Revoked",
+      "seats": 0,
+      "billingCycle": "N/A",
+      "grantedAt": "2026-08-02T10:11:25.465Z",
+      "updatedAt": "2026-08-02T10:11:25.465Z"
+    },
+    {
+      "id": "usr_013",
+      "name": "Matthew Harris",
+      "email": "matthew.h@logistics.com",
+      "role": "Operations Manager",
+      "plan": "Claude Team",
+      "status": "Active",
+      "seats": 5,
+      "billingCycle": "Monthly",
+      "grantedAt": "2026-06-04T10:11:25.465Z",
+      "updatedAt": "2026-06-04T10:11:25.465Z"
+    },
+    {
+      "id": "usr_014",
+      "name": "Isabella Martin",
+      "email": "isabella.m@retailgroup.com",
+      "role": "Marketing Director",
+      "plan": "Claude Pro",
+      "status": "Active",
+      "seats": 1,
+      "billingCycle": "Monthly",
+      "grantedAt": "2026-06-09T10:11:25.465Z",
+      "updatedAt": "2026-06-09T10:11:25.465Z"
+    },
+    {
+      "id": "usr_015",
+      "name": "Ethan Thompson",
+      "email": "ethan.t@financesec.com",
+      "role": "Risk Analyst",
+      "plan": "Enterprise",
+      "status": "Active",
+      "seats": 20,
+      "billingCycle": "Annual",
+      "grantedAt": "2026-06-14T10:11:25.465Z",
+      "updatedAt": "2026-06-14T10:11:25.465Z"
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "log_1785751905588_puyj",
+      "timestamp": "2026-08-03T10:11:45.588Z",
+      "adminUser": "admin",
+      "targetUserId": "usr_001",
+      "targetUserName": "John Doe",
+      "targetUserEmail": "john.doe@anthropic-client.com",
+      "action": "PLAN_CHANGED",
+      "oldPlan": "Claude Pro",
+      "newPlan": "Enterprise",
+      "notes": "Admin changed plan from Claude Pro to Enterprise"
+    },
+    {
+      "id": "log_1785751900520_8dak",
+      "timestamp": "2026-08-03T10:11:40.519Z",
+      "adminUser": "admin",
+      "targetUserId": "usr_001",
+      "targetUserName": "John Doe",
+      "targetUserEmail": "john.doe@anthropic-client.com",
+      "action": "PLAN_CHANGED",
+      "oldPlan": "Claude Pro",
+      "newPlan": "Claude Pro",
+      "notes": "Admin changed plan from Claude Pro to Claude Pro"
+    },
+    {
+      "id": "log_001",
+      "timestamp": "2026-08-03T08:11:25.465Z",
+      "adminUser": "admin",
+      "targetUserId": "usr_001",
+      "targetUserName": "John Doe",
+      "targetUserEmail": "john.doe@anthropic-client.com",
+      "action": "PLAN_GRANTED",
+      "oldPlan": "No Access",
+      "newPlan": "Claude Pro",
+      "notes": "Initial workspace onboard"
+    },
+    {
+      "id": "log_002",
+      "timestamp": "2026-08-03T06:11:25.465Z",
+      "adminUser": "admin",
+      "targetUserId": "usr_002",
+      "targetUserName": "Sarah Lee",
+      "targetUserEmail": "sarah.lee@designhub.io",
+      "action": "PLAN_UPGRADE",
+      "oldPlan": "Claude Pro",
+      "newPlan": "Claude Team",
+      "notes": "Upgraded for design team workspace"
+    },
+    {
+      "id": "log_003",
+      "timestamp": "2026-08-03T02:11:25.465Z",
+      "adminUser": "svc_bot",
+      "targetUserId": "usr_003",
+      "targetUserName": "Alex Kim",
+      "targetUserEmail": "alex.kim@fintechlabs.com",
+      "action": "PLAN_GRANTED",
+      "oldPlan": "No Access",
+      "newPlan": "Claude Pro",
+      "notes": "Auto-provisioned via SCIM directory sync"
+    },
+    {
+      "id": "log_004",
+      "timestamp": "2026-08-02T22:11:25.465Z",
+      "adminUser": "admin",
+      "targetUserId": "usr_008",
+      "targetUserName": "Olivia Taylor",
+      "targetUserEmail": "olivia.t@venturecapital.io",
+      "action": "PLAN_REVOKED",
+      "oldPlan": "Claude Pro",
+      "newPlan": "No Access",
+      "notes": "Account offboarded"
+    },
+    {
+      "id": "log_005",
+      "timestamp": "2026-08-02T10:11:25.465Z",
+      "adminUser": "admin",
+      "targetUserId": "usr_004",
+      "targetUserName": "Emma Wilson",
+      "targetUserEmail": "emma.wilson@cloudtech.org",
+      "action": "PLAN_UPGRADE",
+      "oldPlan": "Claude Team",
+      "newPlan": "Enterprise",
+      "notes": "Enterprise tier contract activated"
+    }
+  ],
+  "driftAlerts": [
+    {
+      "id": "d1",
+      "type": "unmanaged",
+      "svc": "Anthropic SSO",
+      "detail": {
+        "email": "contractor_ext@vendor.com",
+        "entitlementExternalId": "sso/team-seat"
+      },
+      "detectedAt": "2026-08-03T08:11:25.465Z",
+      "status": "open"
+    },
+    {
+      "id": "d2",
+      "type": "role_mismatch",
+      "svc": "Claude Enterprise",
+      "detail": {
+        "email": "alice@internal.io",
+        "expectedPlan": "Claude Pro",
+        "actualPlan": "Enterprise"
+      },
+      "detectedAt": "2026-08-03T06:11:25.465Z",
+      "status": "open"
+    },
+    {
+      "id": "d3",
+      "type": "missing",
+      "svc": "Slack Enterprise",
+      "detail": {
+        "email": "bob@internal.io",
+        "entitlementExternalId": "slack/paid-seat"
+      },
+      "detectedAt": "2026-08-02T10:11:25.465Z",
+      "status": "open"
+    },
+    {
+      "id": "d4",
+      "type": "orphaned",
+      "svc": "GitHub Enterprise",
+      "detail": {
+        "email": "former.employee@internal.io"
+      },
+      "detectedAt": "2026-08-01T10:11:25.465Z",
+      "status": "open"
+    }
+  ]
+}
