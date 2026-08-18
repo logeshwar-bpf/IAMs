@@ -1,18 +1,27 @@
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
-const SECRET = process.env.JWT_SECRET || 'claude-plan-provisioning-secret-key-2026';
+function getJwtSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('JWT_SECRET environment variable is required in production');
+    }
+    return 'claude-plan-dev-secret-key-2026-only-for-local-testing';
+  }
+  return secret;
+}
 
 export function generateToken(username) {
   return jwt.sign(
     { username, role: 'admin' },
-    SECRET,
+    getJwtSecret(),
     { expiresIn: '8h' }
   );
 }
 
 export function verifyToken(token) {
-  return jwt.verify(token, SECRET);
+  return jwt.verify(token, getJwtSecret());
 }
 
 export async function setAuthCookie(token) {

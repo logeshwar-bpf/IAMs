@@ -1,0 +1,34 @@
+{
+  "name": "iams-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "IAMs Monorepo - GCP IAM, Google Workspace IAM, Claude Plan Provisioning, Jira Access",
+  "workspaces": [
+    "claude-plan-provisioning",
+    "gcp-iam",
+    "google-workspace-iam",
+    "jira-access"
+  ],
+  "scripts": {
+    "dev:claude": "npm run dev --workspace=claude-plan-provisioning",
+    "dev:gcp": "npm run dev --workspace=gcp-iam",
+    "dev:gws": "npm run dev --workspace=google-workspace-iam",
+    "dev:jira": "npm run dev --workspace=jira-access",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "audit": "npm audit",
+    "audit:fix": "npm audit fix"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "iam",
+    "access-management",
+    "provisioning",
+    "monorepo"
+  ],
+  "author": "",
+  "license": "ISC"
+}

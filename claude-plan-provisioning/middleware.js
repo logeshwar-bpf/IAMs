@@ -1,5 +1,16 @@
 import { NextResponse } from 'next/server';
 
+function getJwtSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('JWT_SECRET environment variable is required in production');
+    }
+    return 'claude-plan-dev-secret-key-2026-only-for-local-testing';
+  }
+  return secret;
+}
+
 async function verifyJwtSignature(token) {
   try {
     const parts = token.split('.');
@@ -9,7 +20,7 @@ async function verifyJwtSignature(token) {
     const header = JSON.parse(headerJson);
     if (!header || header.alg !== 'HS256') return null;
 
-    const secret = process.env.JWT_SECRET || 'claude-plan-provisioning-secret-key-2026';
+    const secret = getJwtSecret();
     const encoder = new TextEncoder();
     const key = await crypto.subtle.importKey(
       'raw',

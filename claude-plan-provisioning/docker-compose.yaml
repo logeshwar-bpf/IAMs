@@ -1,18 +1,14 @@
 services:
-  postgres:
-    image: postgres:16-alpine
-    container_name: postgres
-    
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: admin_provisioning
-
+  claude-plan-provisioning:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: claude-plan-provisioning
     ports:
-      - "5432:5432"
-
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
-volumes:
-  postgres_data:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - JWT_SECRET=claude-plan-provisioning-prod-secret-change-in-env
+      - ADMIN_PASSWORD=supersecureadminpass123
+    restart: unless-stopped

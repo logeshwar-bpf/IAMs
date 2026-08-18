@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { googleAdminClient } from '@/lib/google-admin-client';
 import { BulkServiceRequest } from '@/lib/types';
+import { verifyAuth } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = await verifyAuth(request);
+    if (!auth.isValid) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body: BulkServiceRequest = await request.json();
     const { userIds, orgUnitPath, services } = body;
 

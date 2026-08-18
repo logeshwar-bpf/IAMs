@@ -73,7 +73,7 @@ const usersStore: User[] = Array.from({ length: 50 }, (_, i) => {
   };
 });
 
-let auditLogsStore: AuditLog[] = [
+const auditLogsStore: AuditLog[] = [
   {
     id: 'log-101',
     timestamp: new Date(Date.now() - 1800000).toISOString(),
@@ -103,7 +103,7 @@ let auditLogsStore: AuditLog[] = [
   },
 ];
 
-let driftLogsStore: DriftItem[] = [
+const driftLogsStore: DriftItem[] = [
   {
     id: 'drift-1',
     timestamp: new Date(Date.now() - 900000).toISOString(),

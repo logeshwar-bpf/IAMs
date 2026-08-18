@@ -3,8 +3,19 @@ const cors = require('cors');
 const jsonwebtoken = require('jsonwebtoken');
 let { USERS, AUDIT_LOGS, DRIFT_ALERTS, PLANS } = require('./data');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'claude-plan-provisioning-secret-key-2026';
-const ALLOWED_ORIGIN = process.env.APP_URL || 'http://localhost:3000';
+function getJwtSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('JWT_SECRET environment variable is required in production');
+    }
+    return 'claude-plan-dev-secret-key-2026-only-for-local-testing';
+  }
+  return secret;
+}
+
+const JWT_SECRET = getJwtSecret();
+const ALLOWED_ORIGIN = process.env.APP_URL || 'http://localhost:3001';
 
 const app = express();
 app.use(cors({
