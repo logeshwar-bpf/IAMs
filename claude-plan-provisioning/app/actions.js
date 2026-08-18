@@ -38,7 +38,7 @@ export async function fetchUserByIdAction(id) {
 
 export async function updateUserPlanAction({ userId, newPlan, seats, billingCycle, notes }) {
   try {
-    const result = updateUserPlan({
+    const result = await updateUserPlan({
       userId,
       newPlan,
       seats,
@@ -83,7 +83,7 @@ export async function fetchDriftAlertsAction() {
 
 export async function resolveDriftAlertAction(id, status = 'resolved') {
   try {
-    const alert = resolveDriftAlert(id, status);
+    const alert = await resolveDriftAlert(id, status);
     revalidatePath('/drift');
     revalidatePath('/');
     return { success: true, alert };

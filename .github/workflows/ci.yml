@@ -39,3 +39,6 @@ jobs:
 
       - name: Run Security Audit
         run: npm audit --audit-level=high
+
+      - name: Validate Docker Compose Builds
+        run: docker compose build

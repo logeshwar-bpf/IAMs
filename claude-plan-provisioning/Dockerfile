@@ -17,11 +17,11 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=3001
+ENV HOSTNAME="0.0.0.0"
 EXPOSE 3001
 
-COPY --from=builder /app/package.json /app/package-lock.json ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/claude-plan-provisioning ./claude-plan-provisioning
+COPY --from=builder /app/claude-plan-provisioning/.next/standalone ./
+COPY --from=builder /app/claude-plan-provisioning/.next/static ./claude-plan-provisioning/.next/static
 
 WORKDIR /app/claude-plan-provisioning
-CMD ["npm", "run", "start"]
+CMD ["node", "server.js"]

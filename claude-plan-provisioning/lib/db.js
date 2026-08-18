@@ -133,28 +133,48 @@ function generateSeedData() {
 }
 
 let memoryCache = null;
+let lastMtime = 0;
+let writeQueue = Promise.resolve();
+
+function enqueueWrite(fn) {
+  const resultPromise = writeQueue.then(async () => {
+    return await fn();
+  });
+  writeQueue = resultPromise.catch(() => {});
+  return resultPromise;
+}
 
 function ensureDB() {
-  if (memoryCache) return memoryCache;
-
   if (!fs.existsSync(DB_DIR)) {
     fs.mkdirSync(DB_DIR, { recursive: true });
   }
 
   if (!fs.existsSync(DB_FILE)) {
     const seed = generateSeedData();
-    fs.writeFileSync(DB_FILE, JSON.stringify(seed, null, 2), 'utf-8');
+    const tmpFile = `${DB_FILE}.${Date.now()}.${Math.random().toString(36).substring(2, 8)}.tmp`;
+    fs.writeFileSync(tmpFile, JSON.stringify(seed, null, 2), 'utf-8');
+    fs.renameSync(tmpFile, DB_FILE);
     memoryCache = seed;
+    try {
+      lastMtime = fs.statSync(DB_FILE).mtimeMs;
+    } catch {}
     return seed;
   }
 
   try {
+    const stat = fs.statSync(DB_FILE);
+    if (memoryCache && stat.mtimeMs === lastMtime) {
+      return memoryCache;
+    }
+
     const content = fs.readFileSync(DB_FILE, 'utf-8');
     memoryCache = JSON.parse(content);
+    lastMtime = stat.mtimeMs;
     if (!memoryCache.driftAlerts) memoryCache.driftAlerts = INITIAL_DRIFT_ALERTS;
     if (!memoryCache.plans) memoryCache.plans = INITIAL_PLANS;
     return memoryCache;
   } catch (e) {
+    if (memoryCache) return memoryCache;
     const backupFile = `${DB_FILE}.corrupt-${Date.now()}`;
     try {
       fs.renameSync(DB_FILE, backupFile);
@@ -165,13 +185,16 @@ function ensureDB() {
 }
 
 function saveDB(data) {
-  memoryCache = data;
   if (!fs.existsSync(DB_DIR)) {
     fs.mkdirSync(DB_DIR, { recursive: true });
   }
   const tmpFile = `${DB_FILE}.${Date.now()}.${Math.random().toString(36).substring(2, 8)}.tmp`;
   fs.writeFileSync(tmpFile, JSON.stringify(data, null, 2), 'utf-8');
   fs.renameSync(tmpFile, DB_FILE);
+  memoryCache = data;
+  try {
+    lastMtime = fs.statSync(DB_FILE).mtimeMs;
+  } catch {}
 }
 
 // Database helper API methods
@@ -259,49 +282,51 @@ export function getUserById(id) {
   return { ...user, auditLogs: userLogs };
 }
 
-export function updateUserPlan({ userId, newPlan, seats, billingCycle, adminUser = 'admin', notes = '' }) {
-  const db = ensureDB();
-  const userIndex = (db.users || []).findIndex((u) => u.id === userId);
+export async function updateUserPlan({ userId, newPlan, seats, billingCycle, adminUser = 'admin', notes = '' }) {
+  return enqueueWrite(async () => {
+    const db = ensureDB();
+    const userIndex = (db.users || []).findIndex((u) => u.id === userId);
 
-  if (userIndex === -1) {
-    throw new Error('User not found');
-  }
+    if (userIndex === -1) {
+      throw new Error('User not found');
+    }
 
-  const user = db.users[userIndex];
-  const oldPlan = user.plan;
-  const now = new Date().toISOString();
-  const status = newPlan === 'No Access' ? 'Revoked' : 'Active';
+    const user = db.users[userIndex];
+    const oldPlan = user.plan;
+    const now = new Date().toISOString();
+    const status = newPlan === 'No Access' ? 'Revoked' : 'Active';
 
-  db.users[userIndex] = {
-    ...user,
-    plan: newPlan,
-    status,
-    seats: seats ? Number(seats) : newPlan === 'Claude Team' ? 5 : newPlan === 'Enterprise' ? 25 : 1,
-    billingCycle: billingCycle || user.billingCycle,
-    updatedAt: now,
-    grantedAt: oldPlan !== newPlan ? now : user.grantedAt
-  };
+    db.users[userIndex] = {
+      ...user,
+      plan: newPlan,
+      status,
+      seats: seats ? Number(seats) : newPlan === 'Claude Team' ? 5 : newPlan === 'Enterprise' ? 25 : 1,
+      billingCycle: billingCycle || user.billingCycle,
+      updatedAt: now,
+      grantedAt: oldPlan !== newPlan ? now : user.grantedAt
+    };
 
-  const newLog = {
-    id: `log_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`,
-    timestamp: now,
-    adminUser,
-    targetUserId: user.id,
-    targetUserName: user.name,
-    targetUserEmail: user.email,
-    action: oldPlan === 'No Access' ? 'PLAN_GRANTED' : newPlan === 'No Access' ? 'PLAN_REVOKED' : 'PLAN_CHANGED',
-    oldPlan,
-    newPlan,
-    notes: notes || `Admin changed plan from ${oldPlan} to ${newPlan}`
-  };
+    const newLog = {
+      id: `log_${Date.now()}_${Math.random().toString(36).substr(2, 4)}`,
+      timestamp: now,
+      adminUser,
+      targetUserId: user.id,
+      targetUserName: user.name,
+      targetUserEmail: user.email,
+      action: oldPlan === 'No Access' ? 'PLAN_GRANTED' : newPlan === 'No Access' ? 'PLAN_REVOKED' : 'PLAN_CHANGED',
+      oldPlan,
+      newPlan,
+      notes: notes || `Admin changed plan from ${oldPlan} to ${newPlan}`
+    };
 
-  db.auditLogs = [newLog, ...(db.auditLogs || [])];
-  saveDB(db);
+    db.auditLogs = [newLog, ...(db.auditLogs || [])];
+    saveDB(db);
 
-  return {
-    user: db.users[userIndex],
-    auditLog: newLog
-  };
+    return {
+      user: db.users[userIndex],
+      auditLog: newLog
+    };
+  });
 }
 
 export function getAuditLogs({ search = '', page = 1, limit = 15 } = {}) {
@@ -359,15 +384,17 @@ export function getDriftAlerts() {
   return { alerts, total: alerts.filter((d) => d.status === 'open').length };
 }
 
-export function resolveDriftAlert(id, status = 'resolved') {
-  const db = ensureDB();
-  const alerts = db.driftAlerts || INITIAL_DRIFT_ALERTS;
-  const alert = alerts.find((d) => d.id === id);
-  if (!alert) {
-    throw new Error('Alert not found');
-  }
-  alert.status = status;
-  alert.resolvedAt = new Date().toISOString();
-  saveDB(db);
-  return alert;
+export async function resolveDriftAlert(id, status = 'resolved') {
+  return enqueueWrite(async () => {
+    const db = ensureDB();
+    const alerts = db.driftAlerts || INITIAL_DRIFT_ALERTS;
+    const alert = alerts.find((d) => d.id === id);
+    if (!alert) {
+      throw new Error('Alert not found');
+    }
+    alert.status = status;
+    alert.resolvedAt = new Date().toISOString();
+    saveDB(db);
+    return alert;
+  });
 }

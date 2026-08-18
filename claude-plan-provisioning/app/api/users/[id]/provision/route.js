@@ -18,7 +18,7 @@ export async function POST(request, { params }) {
     }
 
     const adminUser = auth.user?.username || 'admin';
-    const result = updateUserPlan({
+    const result = await updateUserPlan({
       userId: id,
       newPlan,
       seats,

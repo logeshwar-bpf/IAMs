@@ -17,11 +17,11 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=3004
+ENV HOSTNAME="0.0.0.0"
 EXPOSE 3004
 
-COPY --from=builder /app/package.json /app/package-lock.json ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/jira-access ./jira-access
+COPY --from=builder /app/jira-access/.next/standalone ./
+COPY --from=builder /app/jira-access/.next/static ./jira-access/.next/static
 
 WORKDIR /app/jira-access
-CMD ["npm", "run", "start"]
+CMD ["node", "server.js"]

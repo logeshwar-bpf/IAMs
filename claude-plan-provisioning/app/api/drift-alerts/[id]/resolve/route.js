@@ -13,7 +13,7 @@ export async function POST(request, { params }) {
     const body = await request.json().catch(() => ({}));
     const status = body.status || 'resolved';
 
-    const alert = resolveDriftAlert(id, status);
+    const alert = await resolveDriftAlert(id, status);
     return NextResponse.json({ success: true, alert });
   } catch (err) {
     return NextResponse.json({ success: false, error: err.message || 'Internal Server Error' }, { status: 400 });

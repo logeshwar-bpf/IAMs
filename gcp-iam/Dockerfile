@@ -17,11 +17,12 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV PORT=3003
+ENV HOSTNAME="0.0.0.0"
 EXPOSE 3003
 
-COPY --from=builder /app/package.json /app/package-lock.json ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/gcp-iam ./gcp-iam
+COPY --from=builder /app/gcp-iam/.next/standalone ./
+COPY --from=builder /app/gcp-iam/.next/static ./gcp-iam/.next/static
+COPY --from=builder /app/gcp-iam/public ./gcp-iam/public
 
 WORKDIR /app/gcp-iam
-CMD ["npm", "run", "start"]
+CMD ["node", "server.js"]
