@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import AdminShell from '@/components/AdminShell';
 import { PageHeader } from '@/components/PageHeader';
 import { Icon } from '@/components/Icons';
+import { getDashboardStats } from '@/lib/api-client';
 
 // ─── helpers ──────────────────────────────────────────────────────────────────
 function timeAgo(iso) {
@@ -83,9 +84,7 @@ export default function DashboardPage() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    // Try the dummy server first, fall back to local data
-    fetch('http://localhost:4000/api/dashboard')
-      .then((r) => r.json())
+    getDashboardStats()
       .then(setData)
       .catch(() => setData(FALLBACK));
   }, []);

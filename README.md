@@ -8,7 +8,7 @@ A unified monorepo housing four dedicated Identity & Access Management (IAM) sys
 
 | Service / Project | Directory | Port | Description |
 | :--- | :--- | :--- | :--- |
-| **Claude IAM** | [`claude-plan-provisioning/`](./claude-plan-provisioning) | `3001` (App) / `4000` (API) | Claude Enterprise plan provisioning, real-time seat assignment, live aurora visuals, and drift tracking. |
+| **Claude IAM** | [`claude-plan-provisioning/`](./claude-plan-provisioning) | `3001` | Claude Enterprise plan provisioning, real-time seat assignment, live aurora visuals, and drift tracking. |
 | **GCP IAM** | [`gcp-iam/`](./gcp-iam) | `3003` | Google Cloud Platform IAM role request workflows, Google OAuth/JWT auth, and project permission governance. |
 | **Google Workspace IAM** | [`google-workspace-iam/`](./google-workspace-iam) | `3002` | Organization Unit management, user directory, bulk service licensing, and policy enforcement. |
 | **Jira Access Management** | [`jira-access/`](./jira-access) | `3004` | Jira project permission matrix, team access control, drift remediation, and real-time audit logs. |
@@ -17,33 +17,41 @@ A unified monorepo housing four dedicated Identity & Access Management (IAM) sys
 
 ## Quick Start
 
-### 1. Claude Plan Provisioning & Mock API
+### Installation & Monorepo Setup
 ```bash
-# Terminal 1: Start Mock Enterprise API
-cd claude-plan-provisioning/claude-enterprise-api
-npm start
-
-# Terminal 2: Start Claude IAM Console
-cd claude-plan-provisioning
-npm run dev -- -p 3001
+npm ci
 ```
 
-### 2. Google Workspace IAM
+### Starting Development Servers
+
 ```bash
-cd google-workspace-iam
-npm run dev -- -p 3002
+# Claude Plan Provisioning (Port 3001)
+npm run dev:claude
+
+# Google Workspace IAM (Port 3002)
+npm run dev:gws
+
+# GCP IAM (Port 3003)
+npm run dev:gcp
+
+# Jira Access Management (Port 3004)
+npm run dev:jira
 ```
 
-### 3. GCP IAM
+### Docker Compose
 ```bash
-cd gcp-iam
-npm run dev
+docker compose up --build
 ```
 
-### 4. Jira Access Management
+---
+
+## Verification & Quality Gates
+
 ```bash
-cd jira-access
-npm run dev -- -p 3004
+npm run lint         # Linting across all workspaces
+npm run typecheck    # TypeScript verification across all workspaces
+npm run build        # Production build across all workspaces
+npm audit            # Monorepo security audit
 ```
 
 ---

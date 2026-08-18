@@ -1,8 +1,8 @@
 services:
   claude-plan-provisioning:
     build:
-      context: ./claude-plan-provisioning
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: claude-plan-provisioning/Dockerfile
     container_name: claude-plan-provisioning
     ports:
       - "3001:3001"
@@ -15,8 +15,8 @@ services:
 
   google-workspace-iam:
     build:
-      context: ./google-workspace-iam
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: google-workspace-iam/Dockerfile
     container_name: google-workspace-iam
     ports:
       - "3002:3002"
@@ -29,8 +29,8 @@ services:
 
   gcp-iam:
     build:
-      context: ./gcp-iam
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: gcp-iam/Dockerfile
     container_name: gcp-iam
     ports:
       - "3003:3003"
@@ -42,8 +42,8 @@ services:
 
   jira-access:
     build:
-      context: ./jira-access
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: jira-access/Dockerfile
     container_name: jira-access
     ports:
       - "3004:3004"

@@ -9,47 +9,39 @@ This platform provides enterprise-wide visibility, role-based access control, pl
 - **User Directory & Provisioning:** Search, filter, and modify seat allocations and subscription plans.
 - **Drift Alerts:** Real-time monitoring and remediation of access drift across teams.
 - **Audit Logs:** Full tracking of admin access requests, approval workflows, and plan updates.
-- **Independent Express API:** Lightweight Node.js backend server (`/claude-enterprise-api` and `/dummy-server`) powering real-time statistics and storage.
+- **Integrated Route Handlers & Server Actions:** Built-in Next.js authenticated endpoints with fail-closed security and JWT session verification.
 - **Next.js Dashboard:** Modern dashboard interface built with Next.js App Router and Tailwind CSS.
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js 18+ 
-- npm or yarn / pnpm
+- Node.js 20+
+- npm
 
 ### Installation
-
-1. **Install dependencies:**
+From the monorepo root:
 ```bash
-npm install
+npm ci
 ```
 
-2. **Start the API Server:**
+### Running the Application
 ```bash
-node dummy-server/server.js
-# or node claude-enterprise-api/server.js (runs on port 4000)
+npm run dev --workspace=claude-plan-provisioning
 ```
 
-3. **Start the Frontend Dashboard:**
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) to view the dashboard.
+Open [http://localhost:3001](http://localhost:3001) to view the dashboard.
 
 ## Project Structure
 ```
-├── app/                    # Next.js App Router pages and API routes
+├── app/                    # Next.js App Router pages, Server Actions, and API routes
 ├── components/             # React UI components & navigation
-├── lib/                    # API client and helper functions
-├── dummy-server/           # Standalone Express API server (Port 4000)
-├── claude-enterprise-api/  # Claude Enterprise API backend module
-└── docker-compose.yaml     # Containerization setup
+├── data/                   # Initial / persistent JSON storage
+├── lib/                    # API client, database engine, and authentication
+└── Dockerfile              # Monorepo containerization build
 ```
 
 ## Tech Stack
 - **Framework:** Next.js 16 / React 19
 - **Styling:** Tailwind CSS
-- **Backend:** Node.js / Express
+- **Authentication:** JWT (HMAC-SHA256) & bcrypt
 - **Language:** TypeScript / JavaScript

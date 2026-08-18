@@ -4,6 +4,7 @@ import { useState, useEffect, useTransition } from 'react';
 import AdminShell from '@/components/AdminShell';
 import { PageHeader } from '@/components/PageHeader';
 import { Icon } from '@/components/Icons';
+import { getDriftAlerts, resolveDriftAlert } from '@/lib/api-client';
 
 function timeAgo(iso) {
   if (!iso) return '—';
@@ -68,9 +69,7 @@ export default function DriftPage() {
   const [toast, setToast] = useState(null);
 
   useEffect(() => {
-    // Try dummy server first
-    fetch('http://localhost:4000/api/drift-alerts')
-      .then((r) => r.json())
+    getDriftAlerts()
       .then((data) => setAlerts(data.alerts ?? data))
       .catch(() => setAlerts(DUMMY_ALERTS));
   }, []);
@@ -83,12 +82,8 @@ export default function DriftPage() {
   const handleResolve = (id, action) => {
     startTransition(async () => {
       try {
-        const res = await fetch(`http://localhost:4000/api/drift-alerts/${id}/resolve`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ status: action }),
-        });
-        if (res.ok) {
+        const res = await resolveDriftAlert(id, action);
+        if (res && (res.success || res.alert)) {
           setResolved((prev) => new Set([...prev, id]));
           showToast(action === 'resolved' ? '✓ Alert remediated' : '✓ Alert acknowledged');
         } else {

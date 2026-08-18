@@ -10,6 +10,7 @@
     "jira-access"
   ],
   "scripts": {
+    "dev": "npm run dev:claude",
     "dev:claude": "npm run dev --workspace=claude-plan-provisioning",
     "dev:gcp": "npm run dev --workspace=gcp-iam",
     "dev:gws": "npm run dev --workspace=google-workspace-iam",

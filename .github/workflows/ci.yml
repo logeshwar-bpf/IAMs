@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, fixes]
+    branches: ['**']
   pull_request:
     branches: [main]
 
@@ -26,15 +26,15 @@ jobs:
           cache: 'npm'
 
       - name: Install Monorepo Dependencies
-        run: npm ci || npm install
+        run: npm ci
 
       - name: Run Monorepo Linting
         run: npm run lint
 
-      - name: Run Type Checking
+      - name: Run Type Checking (all workspaces)
         run: npm run typecheck
 
-      - name: Run Production Builds
+      - name: Run Production Builds (all workspaces)
         run: npm run build
 
       - name: Run Security Audit

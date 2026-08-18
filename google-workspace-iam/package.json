@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "google-auth-library": "^9.15.0",
+    "google-auth-library": "^10.5.0",
     "googleapis": "^175.0.0",
     "jose": "^6.0.0",
     "lucide-react": "^0.468.0",
