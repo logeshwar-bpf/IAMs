@@ -185,6 +185,9 @@ function ensureDB() {
   } catch (e) {
     memoryCache = null;
     lastMtime = 0;
+    if (!(e instanceof SyntaxError)) {
+      throw e;
+    }
     const backupFile = `${DB_FILE}.corrupt-${Date.now()}`;
     try {
       fs.renameSync(DB_FILE, backupFile);
