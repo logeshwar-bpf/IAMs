@@ -132,6 +132,15 @@ function generateSeedData() {
   return { users, auditLogs: initialAuditLogs, driftAlerts: INITIAL_DRIFT_ALERTS, plans: INITIAL_PLANS };
 }
 
+/**
+ * Concurrency & Scaling Architecture Note:
+ * `writeQueue` provides strict write serialization for single-process deployments (such as the default Next.js
+ * standalone runner and single-replica container). The file `mtimeMs` check provides read-cache coherency across local reads.
+ *
+ * If horizontally scaling this application across multiple container replicas or distributed serverless instances,
+ * write operations require an external transactional datastore (such as PostgreSQL) or distributed locking (e.g., flock/Redis)
+ * to maintain cross-process mutual exclusion.
+ */
 let memoryCache = null;
 let lastMtime = 0;
 let writeQueue = Promise.resolve();
@@ -174,7 +183,8 @@ function ensureDB() {
     if (!memoryCache.plans) memoryCache.plans = INITIAL_PLANS;
     return memoryCache;
   } catch (e) {
-    if (memoryCache) return memoryCache;
+    memoryCache = null;
+    lastMtime = 0;
     const backupFile = `${DB_FILE}.corrupt-${Date.now()}`;
     try {
       fs.renameSync(DB_FILE, backupFile);
