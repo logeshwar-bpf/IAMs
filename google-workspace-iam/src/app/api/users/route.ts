@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { googleAdminClient } from '@/lib/google-admin-client';
 import { ServiceName } from '@/lib/types';
+import { verifyAuth } from '@/lib/auth';
 
 export async function GET(request: NextRequest) {
   try {
+    const auth = await verifyAuth(request);
+    if (!auth.isValid) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { searchParams } = new URL(request.url);
     const search = searchParams.get('search') || undefined;
     const suspended = searchParams.get('suspended') !== null ? searchParams.get('suspended') === 'true' : undefined;
@@ -29,6 +35,11 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = await verifyAuth(request);
+    if (!auth.isValid) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await request.json();
     const { givenName, familyName, primaryEmail, services } = body;
 

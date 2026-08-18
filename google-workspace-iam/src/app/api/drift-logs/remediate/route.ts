@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { googleAdminClient } from '@/lib/google-admin-client';
+import { verifyAuth } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
+    const auth = await verifyAuth(request);
+    if (!auth.isValid) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { driftId } = await request.json();
     if (!driftId) {
       return NextResponse.json({ error: 'driftId is required' }, { status: 400 });

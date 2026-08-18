@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Lint, Typecheck, Build, and Security Audit
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install Monorepo Dependencies
+        run: npm ci
+
+      - name: Run Monorepo Linting
+        run: npm run lint
+
+      - name: Run Type Checking (all workspaces)
+        run: npm run typecheck
+
+      - name: Run Production Builds (all workspaces)
+        run: npm run build
+
+      - name: Run Security Audit
+        run: npm audit --audit-level=high
+
+      - name: Validate Docker Compose Builds
+        run: docker compose build

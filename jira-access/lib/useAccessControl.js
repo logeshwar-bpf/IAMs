@@ -9,18 +9,39 @@ export function useAccessControl() {
   const [logs, setLogs] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Initialize data from LocalStorage
+  // Initialize data from LocalStorage and verify session from server
   useEffect(() => {
     const data = getStoredData();
     setProjects(data.projects || []);
     setPeople(data.people || []);
     setLogs(data.logs || []);
 
-    const storedAdmin = getStoredAdminUser();
-    if (storedAdmin) {
-      setAdminUser(storedAdmin);
-    }
-    setIsLoaded(true);
+    // Verify session token on server
+    fetch("/api/auth/me")
+      .then((res) => {
+        if (res.ok) return res.json();
+        return null;
+      })
+      .then((data) => {
+        if (data && data.user) {
+          setAdminUser(data.user);
+          saveStoredAdminUser(data.user);
+        } else {
+          const storedAdmin = getStoredAdminUser();
+          if (storedAdmin) {
+            setAdminUser(storedAdmin);
+          }
+        }
+      })
+      .catch(() => {
+        const storedAdmin = getStoredAdminUser();
+        if (storedAdmin) {
+          setAdminUser(storedAdmin);
+        }
+      })
+      .finally(() => {
+        setIsLoaded(true);
+      });
   }, []);
 
   // Save state updates to LocalStorage
@@ -47,6 +68,7 @@ export function useAccessControl() {
 
   // Handle Logout
   const handleLogout = () => {
+    fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
     setAdminUser(null);
     saveStoredAdminUser(null);
   };

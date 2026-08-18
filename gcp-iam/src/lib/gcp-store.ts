@@ -69,12 +69,12 @@ export const initialUserProvisions: UserProvision[] = [
   },
 ];
 
-let MOCK_PROVISIONS: Record<string, UserProvision> = {
+const MOCK_PROVISIONS: Record<string, UserProvision> = {
   'logeshwar2424@gmail.com': { ...initialUserProvisions[0], roles: [...initialUserProvisions[0].roles], services: [...initialUserProvisions[0].services], projects: [...initialUserProvisions[0].projects] },
   '1092945188165-compute@developer.gserviceaccount.com': { ...initialUserProvisions[1], roles: [...initialUserProvisions[1].roles], services: [...initialUserProvisions[1].services], projects: [...initialUserProvisions[1].projects] },
 };
 
-let MOCK_REQUESTS: AccessRequestItem[] = [
+const MOCK_REQUESTS: AccessRequestItem[] = [
   {
     id: 'req-1',
     userEmail: 'logeshwar2424@gmail.com',

@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
+import { getAdminPassword, signSessionToken } from '../../../../lib/auth';
 
 export async function POST(request) {
   try {
     const { email, password } = await request.json();
 
     const adminEmail = process.env.ADMIN_EMAIL || 'admin@jira.internal';
-    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123';
+    const adminPassword = getAdminPassword();
 
     if (!email || !password) {
       return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
@@ -22,11 +23,12 @@ export async function POST(request) {
       lastLogin: new Date().toISOString(),
     };
 
+    const token = await signSessionToken(user);
     const response = NextResponse.json({ success: true, user });
 
     response.cookies.set({
       name: 'jira_session',
-      value: JSON.stringify({ user, ts: Date.now() }),
+      value: token,
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',

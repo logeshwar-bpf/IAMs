@@ -6,20 +6,23 @@ import {
   getUsers,
   getUserById,
   updateUserPlan,
-  getAuditLogs
-} from '@/lib/api-client';
+  getAuditLogs,
+  getPlans,
+  getDriftAlerts,
+  resolveDriftAlert
+} from '@/lib/db';
 
 export async function fetchDashboardStatsAction() {
   try {
-    return await getDashboardStats();
+    return getDashboardStats();
   } catch (err) {
     return { stats: { totalUsers: 0, activePlans: 0, noAccess: 0, driftAlerts: 0, distribution: {} }, drift: [], activity: [] };
   }
 }
 
-export async function fetchUsersAction({ search = '', plan = 'All', page = 1, limit = 10 }) {
+export async function fetchUsersAction({ search = '', plan = 'All', page = 1, limit = 10 } = {}) {
   try {
-    return await getUsers({ search, plan, page, limit });
+    return getUsers({ search, plan, page, limit });
   } catch (err) {
     return { users: [], total: 0, page: 1, totalPages: 1, from: 0, to: 0 };
   }
@@ -27,7 +30,7 @@ export async function fetchUsersAction({ search = '', plan = 'All', page = 1, li
 
 export async function fetchUserByIdAction(id) {
   try {
-    return await getUserById(id);
+    return getUserById(id);
   } catch (err) {
     return null;
   }
@@ -54,10 +57,37 @@ export async function updateUserPlanAction({ userId, newPlan, seats, billingCycl
   }
 }
 
-export async function fetchAuditLogsAction({ search = '', page = 1, limit = 10 }) {
+export async function fetchAuditLogsAction({ search = '', page = 1, limit = 15 } = {}) {
   try {
-    return await getAuditLogs({ search, page, limit });
+    return getAuditLogs({ search, page, limit });
   } catch (err) {
     return { logs: [], total: 0, page: 1, totalPages: 1, from: 0, to: 0 };
+  }
+}
+
+export async function fetchPlansAction() {
+  try {
+    return getPlans();
+  } catch (err) {
+    return { plans: [] };
+  }
+}
+
+export async function fetchDriftAlertsAction() {
+  try {
+    return getDriftAlerts();
+  } catch (err) {
+    return { alerts: [], total: 0 };
+  }
+}
+
+export async function resolveDriftAlertAction(id, status = 'resolved') {
+  try {
+    const alert = await resolveDriftAlert(id, status);
+    revalidatePath('/drift');
+    revalidatePath('/');
+    return { success: true, alert };
+  } catch (err) {
+    return { success: false, error: err.message };
   }
 }
